@@ -1,13 +1,27 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import gsap from "gsap";
+
+// animations
+import {
+  closeMenu,
+  closeMenuBG,
+  openMenu,
+  openMenuBG,
+  staggerReveal,
+  staggerText,
+  fadeInUp,
+  handleCity,
+  handleCityReturn,
+  handleHover,
+  handleHoverExit,
+} from "../Animations";
 
 // images
 import dallas from "../images/dallas.webp";
-import austin from "../images/dallas.webp";
-import newyork from "../images/dallas.webp";
-import sanfrancisco from "../images/dallas.webp";
-import beijing from "../images/dallas.webp";
+import austin from "../images/austin.webp";
+import newyork from "../images/newyork.webp";
+import sanfrancisco from "../images/sanfrancisco.webp";
+import beijing from "../images/beijing.webp";
 
 const cities = [
   {
@@ -43,101 +57,24 @@ const Hamburger = ({ state }) => {
   let line3 = useRef(null);
   let info = useRef(null);
 
+  // Gets called each time state changes
   useEffect(() => {
     if (state.clicked === false) {
       // close hamburger menu
-      gsap.to([revealMenu, revealMenuBG], {
-        duration: 0.8,
-        height: 0,
-        ease: "power3.inOut",
-        stagger: {
-          amount: 0.07,
-        },
-      });
-      gsap.to(menu, {
-        duration: 1,
-        css: { display: "none" },
-      });
+      closeMenuBG(revealMenu, revealMenuBG);
+      closeMenu(menu);
     } else if (
       state.clicked === true ||
       (state.clicked === true && state.initial === null)
     ) {
       // open menu
-      gsap.to(menu, {
-        duration: 0,
-        css: { display: "block" },
-      });
-      gsap.to([revealMenuBG, revealMenu], {
-        duration: 0,
-        opacity: 1,
-        height: "100%",
-      });
+      openMenu(menu);
+      openMenuBG(revealMenuBG, revealMenu);
       staggerReveal(revealMenuBG, revealMenu);
       fadeInUp(info);
       staggerText(line1, line2, line3);
     }
   }, [state]);
-
-  const staggerReveal = (node1, node2) => {
-    gsap.from([node1, node2], {
-      duration: 0.8,
-      height: 0,
-      transformOrigin: "right top",
-      skewY: 2,
-      ease: "power3.inOut",
-      stagger: {
-        amount: 0.1,
-      },
-    });
-  };
-
-  const staggerText = (node1, node2, node3) => {
-    gsap.from([node1, node2, node3], {
-      duration: 0.8,
-      y: 100,
-      delay: 0.1,
-      ease: "power3.inOut",
-      stagger: {
-        amount: 0.3,
-      },
-    });
-  };
-
-  const fadeInUp = (node) => {
-    gsap.from(node, {
-      y: 60,
-      duration: 1,
-      delay: 0.2,
-      opacity: 0,
-      ease: "power3.inOut",
-    });
-  };
-
-  // Gets called when mouse hover over city
-  const handleCity = (cityImage) => {
-    gsap.to(cityBG, {
-      duration: 0,
-      background: `url(${cityImage}) center center`,
-    });
-    gsap.to(cityBG, {
-      duration: 0.4,
-      opacity: 1,
-      ease: "power3.inOut",
-    });
-    gsap.from(cityBG, {
-      duration: 0.4,
-      skewY: 2,
-      transformOrigin: "right top",
-    });
-  };
-
-  // Gets called when mouse no longer hovering over a city
-  const handleCityReturn = () => {
-    gsap.to(cityBG, {
-      duration: 0.4,
-      opacity: 0,
-    });
-  };
 
   return (
     <div ref={(el) => (menu = el)} className="hamburger-menu">
@@ -153,17 +90,32 @@ const Hamburger = ({ state }) => {
               <nav>
                 <ul>
                   <li>
-                    <Link ref={(el) => (line1 = el)} to="/opportunities">
+                    <Link
+                      onMouseEnter={(event) => handleHover(event)}
+                      onMouseOut={(event) => handleHoverExit(event)}
+                      ref={(el) => (line1 = el)}
+                      to="/opportunities"
+                    >
                       Opportunities
                     </Link>
                   </li>
                   <li>
-                    <Link ref={(el) => (line2 = el)} to="/solutions">
+                    <Link
+                      onMouseEnter={(event) => handleHover(event)}
+                      onMouseOut={(event) => handleHoverExit(event)}
+                      ref={(el) => (line2 = el)}
+                      to="/solutions"
+                    >
                       Solutions
                     </Link>
                   </li>
                   <li>
-                    <Link ref={(el) => (line3 = el)} to="/contact-us">
+                    <Link
+                      onMouseEnter={(event) => handleHover(event)}
+                      onMouseOut={(event) => handleHoverExit(event)}
+                      ref={(el) => (line3 = el)}
+                      to="/contact-us"
+                    >
                       Contact Us
                     </Link>
                   </li>
@@ -184,8 +136,8 @@ const Hamburger = ({ state }) => {
                 {cities.map((city) => (
                   <span
                     key={city.name}
-                    onMouseEnter={() => handleCity(city.image)}
-                    onMouseOut={handleCityReturn}
+                    onMouseEnter={() => handleCity(cityBG, city.image)}
+                    onMouseOut={() => handleCityReturn(cityBG)}
                   >
                     {city.name}
                   </span>
