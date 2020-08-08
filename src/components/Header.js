@@ -3,7 +3,6 @@ import { Link, withRouter } from "react-router-dom";
 import Hamburger from "./Hamburger";
 
 const Header = ({ history }) => {
-
   // State for menu button press
   const [state, setState] = useState({
     initial: false,
@@ -14,12 +13,14 @@ const Header = ({ history }) => {
   // State for disabling the menu button for good UX purposes
   const [disabled, setDisabled] = useState(false);
 
-
+  // Close menu on router changes
   useEffect(() => {
     history.listen(() => {
-      setState({ clicked: false, menuName: "Menu"})
-    })
-  })
+      setState({ clicked: false, menuName: "Menu" });
+    });
+  });
+
+  
   const handleMenu = () => {
     disableMenu();
     // This condition will execute once the first time menu is clicked

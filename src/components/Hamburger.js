@@ -2,7 +2,16 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const Hamburger = ({ state }) => {
+
+  // References to DOM nodes that we'll animate
   let menu = useRef(null);
+  let revealMenu = useRef(null);
+  let revealMenuBG = useRef(null);
+  let cityBG = useRef(null);
+  let line1 = useRef(null);
+  let line2 = useRef(null);
+  let line3 = useRef(null);
+  let info = useRef(null);
 
   useEffect(() => {
     if (state.clicked === false) {
@@ -19,8 +28,8 @@ const Hamburger = ({ state }) => {
 
   return (
     <div ref={(el) => (menu = el)} className="hamburger-menu">
-      <div className="menu-secondary-background-color"></div>
-      <div className="menu-layer">
+      <div ref={(el) => (revealMenuBG = el)} className="menu-secondary-background-color"></div>
+      <div ref={(el) => (revealMenu = el)} className="menu-layer">
         <div className="menu-city-background"></div>
         <div className="container">
           <div className="wrapper">
@@ -28,17 +37,17 @@ const Hamburger = ({ state }) => {
               <nav>
                 <ul>
                   <li>
-                    <Link to="/opportunities">Opportunities</Link>
+                    <Link ref={(el) => (line1 = el)} to="/opportunities">Opportunities</Link>
                   </li>
                   <li>
-                    <Link to="/solutions">Solutions</Link>
+                    <Link ref={(el) => (line2 = el)} to="/solutions">Solutions</Link>
                   </li>
                   <li>
-                    <Link to="/contact-us">Contact Us</Link>
+                    <Link ref={(el) => (line3 = el)} to="/contact-us">Contact Us</Link>
                   </li>
                 </ul>
               </nav>
-              <div className="info">
+              <div ref={(el) => (info = el)} className="info">
                 <h3>Our Promise</h3>
                 <p>
                   The purpose of lorem ipsum is to create a natural looking
