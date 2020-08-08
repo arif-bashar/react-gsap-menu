@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, withRouter } from "react-router-dom";
 import Hamburger from "./Hamburger";
 
-const Header = () => {
+const Header = ({ history }) => {
+
   // State for menu button press
   const [state, setState] = useState({
     initial: false,
@@ -13,6 +14,12 @@ const Header = () => {
   // State for disabling the menu button for good UX purposes
   const [disabled, setDisabled] = useState(false);
 
+
+  useEffect(() => {
+    history.listen(() => {
+      setState({ clicked: false, menuName: "Menu"})
+    })
+  })
   const handleMenu = () => {
     disableMenu();
     // This condition will execute once the first time menu is clicked
@@ -61,9 +68,9 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <Hamburger />
+      <Hamburger state={state} />
     </header>
   );
 };
 
-export default Header;
+export default withRouter(Header);
