@@ -2,6 +2,36 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 
+// images
+import dallas from "../images/dallas.webp";
+import austin from "../images/dallas.webp";
+import newyork from "../images/dallas.webp";
+import sanfrancisco from "../images/dallas.webp";
+import beijing from "../images/dallas.webp";
+
+const cities = [
+  {
+    name: "Dallas",
+    image: dallas,
+  },
+  {
+    name: "Austin",
+    image: austin,
+  },
+  {
+    name: "New York",
+    image: newyork,
+  },
+  {
+    name: "San Francisco",
+    image: sanfrancisco,
+  },
+  {
+    name: "Beijing",
+    image: beijing,
+  },
+];
+
 const Hamburger = ({ state }) => {
   // References to DOM nodes that we'll animate
   let menu = useRef(null);
@@ -83,6 +113,32 @@ const Hamburger = ({ state }) => {
     });
   };
 
+  // Gets called when mouse hover over city
+  const handleCity = (cityImage) => {
+    gsap.to(cityBG, {
+      duration: 0,
+      background: `url(${cityImage}) center center`,
+    });
+    gsap.to(cityBG, {
+      duration: 0.4,
+      opacity: 1,
+      ease: "power3.inOut",
+    });
+    gsap.from(cityBG, {
+      duration: 0.4,
+      skewY: 2,
+      transformOrigin: "right top",
+    });
+  };
+
+  // Gets called when mouse no longer hovering over a city
+  const handleCityReturn = () => {
+    gsap.to(cityBG, {
+      duration: 0.4,
+      opacity: 0,
+    });
+  };
+
   return (
     <div ref={(el) => (menu = el)} className="hamburger-menu">
       <div
@@ -90,7 +146,7 @@ const Hamburger = ({ state }) => {
         className="menu-secondary-background-color"
       ></div>
       <div ref={(el) => (revealMenu = el)} className="menu-layer">
-        <div className="menu-city-background"></div>
+        <div ref={(el) => (cityBG = el)} className="menu-city-background"></div>
         <div className="container">
           <div className="wrapper">
             <div className="menu-links">
@@ -125,11 +181,15 @@ const Hamburger = ({ state }) => {
               </div>
               <div className="locations">
                 Locations:
-                <span>Dallas</span>
-                <span>Austin</span>
-                <span>New York</span>
-                <span>San Francisco</span>
-                <span>Beijing</span>
+                {cities.map((city) => (
+                  <span
+                    key={city.name}
+                    onMouseEnter={() => handleCity(city.image)}
+                    onMouseOut={handleCityReturn}
+                  >
+                    {city.name}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
