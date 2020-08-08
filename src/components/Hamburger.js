@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
 
 const Hamburger = ({ state }) => {
-
   // References to DOM nodes that we'll animate
   let menu = useRef(null);
   let revealMenu = useRef(null);
@@ -16,19 +16,41 @@ const Hamburger = ({ state }) => {
   useEffect(() => {
     if (state.clicked === false) {
       // close hamburger menu
-      menu.style.display = "none";
+      gsap.to([revealMenu, revealMenuBG], {
+        duration: 0.8,
+        height: 0,
+        ease: "power3.inOut",
+        stagger: {
+          amount: 0.07,
+        },
+      });
+      gsap.to(menu, {
+        duration: 1,
+        css: { display: "none" },
+      });
     } else if (
       state.clicked === true ||
       (state.clicked === true && state.initial === null)
     ) {
       // open menu
-      menu.style.display = "block";
+      gsap.to(menu, {
+        duration: 0,
+        css: { display: "block" },
+      });
+      gsap.to([revealMenuBG, revealMenu], {
+        duration: 0,
+        opacity: 1,
+        height: "100%"
+      })
     }
   });
 
   return (
     <div ref={(el) => (menu = el)} className="hamburger-menu">
-      <div ref={(el) => (revealMenuBG = el)} className="menu-secondary-background-color"></div>
+      <div
+        ref={(el) => (revealMenuBG = el)}
+        className="menu-secondary-background-color"
+      ></div>
       <div ref={(el) => (revealMenu = el)} className="menu-layer">
         <div className="menu-city-background"></div>
         <div className="container">
@@ -37,13 +59,19 @@ const Hamburger = ({ state }) => {
               <nav>
                 <ul>
                   <li>
-                    <Link ref={(el) => (line1 = el)} to="/opportunities">Opportunities</Link>
+                    <Link ref={(el) => (line1 = el)} to="/opportunities">
+                      Opportunities
+                    </Link>
                   </li>
                   <li>
-                    <Link ref={(el) => (line2 = el)} to="/solutions">Solutions</Link>
+                    <Link ref={(el) => (line2 = el)} to="/solutions">
+                      Solutions
+                    </Link>
                   </li>
                   <li>
-                    <Link ref={(el) => (line3 = el)} to="/contact-us">Contact Us</Link>
+                    <Link ref={(el) => (line3 = el)} to="/contact-us">
+                      Contact Us
+                    </Link>
                   </li>
                 </ul>
               </nav>
