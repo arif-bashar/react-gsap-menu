@@ -16,35 +16,8 @@ import {
   handleHoverExit,
 } from "../Animations";
 
-// images
-import dallas from "../images/dallas.webp";
-import austin from "../images/austin.webp";
-import newyork from "../images/newyork.webp";
-import sanfrancisco from "../images/sanfrancisco.webp";
-import beijing from "../images/beijing.webp";
-
-const cities = [
-  {
-    name: "Dallas",
-    image: dallas,
-  },
-  {
-    name: "Austin",
-    image: austin,
-  },
-  {
-    name: "New York",
-    image: newyork,
-  },
-  {
-    name: "San Francisco",
-    image: sanfrancisco,
-  },
-  {
-    name: "Beijing",
-    image: beijing,
-  },
-];
+// Hardcoded cities array
+import { Cities } from "./Cities";
 
 const Hamburger = ({ state }) => {
   // References to DOM nodes that we'll animate
@@ -57,7 +30,7 @@ const Hamburger = ({ state }) => {
   let line3 = useRef(null);
   let info = useRef(null);
 
-  // Gets called each time state changes
+  // Main animation caller each time state changes
   useEffect(() => {
     if (state.clicked === false) {
       // close hamburger menu
@@ -133,7 +106,7 @@ const Hamburger = ({ state }) => {
               </div>
               <div className="locations">
                 Locations:
-                {cities.map((city) => (
+                {Cities.map((city) => (
                   <span
                     key={city.name}
                     onMouseEnter={() => handleCity(cityBG, city.image)}

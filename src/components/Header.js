@@ -20,7 +20,6 @@ const Header = ({ history }) => {
     });
   });
 
-  
   const handleMenu = () => {
     disableMenu();
     // This condition will execute once the first time menu is clicked
